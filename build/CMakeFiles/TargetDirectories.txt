@@ -1,4 +1,0 @@
-C:/CodingWorkspace/C++/DL_cpp/build/CMakeFiles/nn_lib.dir
-C:/CodingWorkspace/C++/DL_cpp/build/CMakeFiles/test.dir
-C:/CodingWorkspace/C++/DL_cpp/build/CMakeFiles/edit_cache.dir
-C:/CodingWorkspace/C++/DL_cpp/build/CMakeFiles/rebuild_cache.dir
