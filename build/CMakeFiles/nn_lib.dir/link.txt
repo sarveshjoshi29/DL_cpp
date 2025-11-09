@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libnn_lib.a CMakeFiles/nn_lib.dir/src/Batch_Handler.cpp.obj CMakeFiles/nn_lib.dir/src/gd_momentum.cpp.obj CMakeFiles/nn_lib.dir/src/MLP_Layer.cpp.obj CMakeFiles/nn_lib.dir/src/rmsprop.cpp.obj CMakeFiles/nn_lib.dir/src/wrapper.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libnn_lib.a
