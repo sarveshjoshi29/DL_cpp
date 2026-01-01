@@ -1,6 +1,6 @@
 #pragma once
 #include "Batch_Handler.hpp"
-#include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
 #include "loss.hpp"
@@ -23,14 +23,13 @@
 #include <utility>
 #include <vector>
 
-
 namespace nn {
 class wrapper {
 	private:
 		nn::BatchHandler* batch_handler;
 
 	public:
-		std::vector<nn::MLP_Layer*> layers;
+		std::vector<nn::Layer*> layers;
 		std::mt19937 gen;
 		matx::Matrix<double> data;
 		matx::Matrix<double> y;
@@ -40,9 +39,9 @@ class wrapper {
 
 		~wrapper();
 
-		wrapper(std::initializer_list<nn::MLP_Layer*> inp_layers, nn::optimizer* optimizer, string loss = "mse");
+		wrapper(std::initializer_list<nn::Layer*> inp_layers, nn::optimizer* optimizer, string loss = "mse");
 
-		void train(const matx::Matrix<double> X_train, const matx::Matrix<double> y_train, int epochs = 100, size_t batch_size = 32);
+		void train(const matx::Matrix<double> X_train, const matx::Matrix<double> y_train, int epochs = 100, size_t batch_size = 32, int verbose = 1);
 
 		matx::Matrix<double> predict(matx::Matrix<double> X_test);
 
@@ -50,6 +49,7 @@ class wrapper {
 
 	private:
 		void init_batch_handler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-								matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), optimizer* update_manager);
+								matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), optimizer* update_manager,
+								double (*loss)(matx::Matrix<double>, matx::Matrix<double>));
 };
 } // namespace nn

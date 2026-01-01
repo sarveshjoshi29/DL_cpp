@@ -1,5 +1,5 @@
 #pragma once
-#include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -37,8 +37,8 @@
 namespace nn {
 class optimizer {
 	public:
-		virtual void init_params(std::vector<nn::MLP_Layer*>&) = 0;
-		virtual void update_params(std::vector<nn::MLP_Layer*>&) = 0;
+		virtual void init_params(std::vector<nn::Layer*>&) = 0;
+		virtual void update_params(std::vector<nn::Layer*>&) = 0;
 		virtual ~optimizer() {};
 		// this calls destructor of child class
 };

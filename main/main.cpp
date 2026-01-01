@@ -1,4 +1,6 @@
 #include "Adam.hpp"
+#include "Dropout.hpp"
+#include "Layer.hpp"
 #include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
@@ -35,15 +37,17 @@ int main() {
 	matx::Matrix<double> b(y);
 
 	//(a * (double)5).print_Matrix();
-	nn::MLP_Layer* layer1 = new nn::MLP_Layer(3, "tanh");
-	nn::MLP_Layer* layer2 = new nn::MLP_Layer(4, "sigmoid");
-	nn::MLP_Layer* layer3 = new nn::MLP_Layer(1, "none");
+	nn::Layer* layer1 = new nn::MLP_Layer(3, "tanh");
+	nn::Layer* layer2 = new nn::MLP_Layer(4, "sigmoid");
+	nn::Layer* drop = new nn::Dropout(0.01);
+	nn::Layer* layer3 = new nn::MLP_Layer(1, "none");
 
-	nn::optimizer* optim = new nn::Adam(0.01);
+	nn::optimizer* optim = new nn::Adam(0.15);
 	// std::cout << "np\n";
-	nn::wrapper model({layer1, layer2, layer3}, optim);
+	nn::wrapper model({layer1, layer2, drop, layer3}, optim);
 
-	model.train(a, b, 1000);
+	model.train(a, b, 100);
+	// std::cout << "what\n;";
 	matx::Matrix<double> y_pred = model.predict(a);
 	y_pred.print_Matrix();
 }
@@ -56,8 +60,9 @@ to change ---
 4) separate nn.cpp into diff files , one for each class -- DONE
 
 
-5) add optimizers like adam , sgd
-6) add features like dropout!! -> complicated because layer type can cause issues :(
-7) think about the Matrix constructor how i want to manage it
+5) add optimizers like adam , sgd -- DONE
+6) add option to print loss at each epoch
+7) add features like dropout!! -> complicated because layer type can cause issues :(
+8) think about the Matrix constructor how i want to manage it
 
 */

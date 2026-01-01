@@ -30,7 +30,7 @@ class RMSProp : public optimizer {
 		double beta;
 
 		RMSProp(double beta = 0.5, double alpha = 0.01);
-		void init_params(std::vector<nn::MLP_Layer*>& layers);
-		void update_params(std::vector<nn::MLP_Layer*>& layers);
+		void init_params(std::vector<nn::Layer*>& layers);
+		void update_params(std::vector<nn::Layer*>& layers);
 };
 } // namespace nn

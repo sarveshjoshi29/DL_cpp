@@ -35,8 +35,8 @@ class Adam : public optimizer {
 		std::vector<matx::Matrix<double>> v_bias_corrected;
 		size_t time;
 		Adam(double alpha = 0.01, double beta1 = 0.9, double beta2 = 0.99);
-		void init_params(std::vector<nn::MLP_Layer*>& layers);
-		void update_params(std::vector<nn::MLP_Layer*>& layers);
+		void init_params(std::vector<nn::Layer*>& layers);
+		void update_params(std::vector<nn::Layer*>& layers);
 };
 
 } // namespace nn

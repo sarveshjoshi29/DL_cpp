@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
@@ -21,25 +20,17 @@
 #include <utility>
 #include <vector>
 
-namespace nn { // namespace nn
-
-class MLP_Layer : public Layer {
+namespace nn {
+class Dropout : public Layer {
 	public:
-		matx::Matrix<double> z;
-		matx::Matrix<double> a;
-		int num_neurons;
-		// matx::Matrix<double> w;
-		// matx::Matrix<double> b;
-		matx::Matrix<double> (*activation)(matx::Matrix<double>);
-		matx::Matrix<double> (*activationprime)(matx::Matrix<double>);
-		// matx::Matrix<double> dw;
-		// matx::Matrix<double> db;
-		matx::Matrix<double> a_prev;
-		MLP_Layer(int nl, string act);
-		void set_weights(int dims_prev_layer, std::mt19937& gen);
-		void set_bias();
+		double dropout_rate;
+		matx::Matrix<double> drop_matrix;
+		std::random_device rd;
+		std::mt19937 gen;
+		std::bernoulli_distribution dist;
 
-		int initialize(int dims) override;
+		Dropout(double frac);
+		int initialize(int input_dims) override;
 		matx::Matrix<double> forward_pass(matx::Matrix<double> x) override;
 		matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) override;
 };

@@ -15,6 +15,7 @@ add_library(nn_lib
     src/rmsprop.cpp
     src/wrapper.cpp
     src/Adam.cpp
+    src/Dropout.cpp
 )
 
 target_include_directories(nn_lib 

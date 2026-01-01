@@ -1,5 +1,5 @@
 #pragma once
-#include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include "Matrix.hpp"
 #include "loss.hpp"
 #include "optimizer.hpp"
@@ -28,7 +28,7 @@ class GD_Momentum : public nn::optimizer {
 		double alpha;
 
 		GD_Momentum(double beta = 0.9, double alpha = 0.01);
-		void init_params(std::vector<nn::MLP_Layer*>& layers) override;
-		void update_params(std::vector<nn::MLP_Layer*>& layers) override;
+		void init_params(std::vector<nn::Layer*>& layers) override;
+		void update_params(std::vector<nn::Layer*>& layers) override;
 };
 } // namespace nn
