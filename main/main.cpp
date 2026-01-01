@@ -1,3 +1,4 @@
+#include "Adam.hpp"
 #include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
@@ -38,11 +39,11 @@ int main() {
 	nn::MLP_Layer* layer2 = new nn::MLP_Layer(4, "sigmoid");
 	nn::MLP_Layer* layer3 = new nn::MLP_Layer(1, "none");
 
-	nn::optimizer* optim = new nn::GD_Momentum(0.2, 0.5);
+	nn::optimizer* optim = new nn::Adam(0.01);
 	// std::cout << "np\n";
 	nn::wrapper model({layer1, layer2, layer3}, optim);
 
-	model.train(a, b, 30, 100);
+	model.train(a, b, 1000);
 	matx::Matrix<double> y_pred = model.predict(a);
 	y_pred.print_Matrix();
 }

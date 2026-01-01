@@ -14,6 +14,7 @@ add_library(nn_lib
     src/MLP_Layer.cpp
     src/rmsprop.cpp
     src/wrapper.cpp
+    src/Adam.cpp
 )
 
 target_include_directories(nn_lib 

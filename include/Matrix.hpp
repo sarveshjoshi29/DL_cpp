@@ -35,7 +35,6 @@ template<typename T> class Matrix {
 	protected:
 		vector<vector<T>> data;
 
-		//---------------------------------------------------------------------------
 	public:
 		void resize(int r, int c) {
 			data.resize(r, std::vector<T>(c, T{}));
@@ -469,6 +468,16 @@ template<typename T> class Matrix {
 			return ans;
 		}
 
+		Matrix operator/(const double num) const {
+			matx::Matrix<double> ans(data);
+			for(int i = 0; i < ans.shape()[0]; i++) {
+				for(int j = 0; j < ans.shape()[1]; j++) {
+					ans.data[i][j] /= num;
+				}
+			}
+			return ans;
+		}
+
 		//-------------------------------------------------------------------------------------------------------------------
 		Matrix apply_elem_wise(T (*func)(T)) const {
 			matx::Matrix<double> ans(data);
@@ -507,6 +516,14 @@ template<typename T> class Matrix {
 				}
 			}
 			return Matrix<double>(data);
+		}
+
+		void fill(T k) {
+			for(int i = 0; i < data.size(); i++) {
+				for(int j = 0; j < data[0].size(); j++) {
+					data[i][j] = k;
+				}
+			}
 		}
 };
 } // namespace matx
