@@ -1,5 +1,5 @@
 #include "gd_momentum.hpp"
-#include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include "Matrix.hpp"
 #include "loss.hpp"
 #include "optimizer.hpp"
@@ -24,12 +24,15 @@ namespace nn {
 GD_Momentum::GD_Momentum(double beta, double alpha) : beta{beta}, alpha{alpha} {
 }
 
-void GD_Momentum::init_params(std::vector<nn::MLP_Layer*>& layers) {
+void GD_Momentum::init_params(std::vector<nn::Layer*>& layers) {
 	vdw.resize(layers.size());
 	vdb.resize(layers.size());
 	// std::cout << "fine\n";
 	for(int i = 0; i < vdw.size(); i++) {
 		//	std::cout << layers[0]->dw.size() << "\n";
+		if(!layers[i]->is_trainable) {
+			continue;
+		}
 		std::vector<std::vector<double>> tempvec(layers[i]->dw.size(), std::vector<double>(layers[i]->dw[0].size(), 0));
 		// std::cout << "okk\n";
 		matx::Matrix<double> temp(tempvec);
@@ -41,9 +44,12 @@ void GD_Momentum::init_params(std::vector<nn::MLP_Layer*>& layers) {
 	}
 }
 
-void GD_Momentum::update_params(std::vector<nn::MLP_Layer*>& layers) {
+void GD_Momentum::update_params(std::vector<nn::Layer*>& layers) {
 
 	for(size_t i = 0; i < layers.size(); i++) {
+		if(!layers[i]->is_trainable) {
+			continue;
+		}
 		vdw[i] = vdw[i] * beta + (layers[i]->dw) * (1 - beta);
 		layers[i]->w = layers[i]->w - (vdw[i] * alpha);
 

@@ -1,4 +1,5 @@
 #include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include <algorithm>
 #include <cctype>
 #include <cmath>
@@ -73,18 +74,30 @@ void MLP_Layer::set_bias() {
 	// std::cout << "set bias exited\n";
 }
 
-void MLP_Layer::forward_pass(matx::Matrix<double> x) {
+int MLP_Layer::initialize(int dims) {
+	is_trainable = true;
+	std::random_device rd;
+	std::mt19937 gen{rd()};
+	set_weights(dims, gen);
+	set_bias();
+	return num_neurons;
+}
+
+matx::Matrix<double> MLP_Layer::forward_pass(matx::Matrix<double> x) {
 
 	// std::cout << w.shape()[0] << " " << w.shape()[1] << "\n";
+	a_prev = x;
 	z = (w % x);
 	// std::cout << z.shape()[0] << " " << z.shape()[1] << "\n";
 	z = z + b;
 	// std::cout << b.shape()[0] << " " << b.shape()[1] << "\n";
 	a = activation(z);
+	return a;
 }
 
-void MLP_Layer::backward_pass(matx::Matrix<double> a_prev, matx::Matrix<double> delta_l) {
+matx::Matrix<double> MLP_Layer::backward_pass(matx::Matrix<double> dJ_da) {
 	double m = a.shape()[1];
+	matx::Matrix<double> delta_l = dJ_da * activationprime(z);
 	dw = (delta_l % (a_prev.transpose())) * (1.0 / m);
 	std::vector<std::vector<double>> temp_b(num_neurons, std::vector<double>(1, 0));
 	for(int i = 0; i < num_neurons; i++) {
@@ -96,7 +109,7 @@ void MLP_Layer::backward_pass(matx::Matrix<double> a_prev, matx::Matrix<double> 
 		temp_b[i][0] = t;
 	}
 	db = matx::Matrix<double>(temp_b);
+	return w.transpose() % delta_l;
 }
-
 
 } // namespace nn

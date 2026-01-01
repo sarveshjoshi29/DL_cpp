@@ -1,5 +1,5 @@
 #include "rmsprop.hpp"
-#include "MLP_Layer.hpp"
+#include "Layer.hpp"
 #include "Matrix.hpp"
 #include <algorithm>
 #include <cctype>
@@ -29,11 +29,14 @@ double RMSProp::rt(double x) {
 RMSProp::RMSProp(double beta, double alpha) : alpha{alpha}, beta{beta} {
 }
 
-void RMSProp::init_params(std::vector<nn::MLP_Layer*>& layers) {
+void RMSProp::init_params(std::vector<nn::Layer*>& layers) {
 	sdw.resize(layers.size());
 	sdb.resize(layers.size());
 	// std::cout << "fine\n";
 	for(int i = 0; i < sdw.size(); i++) {
+		if(!layers[i]->is_trainable) {
+			continue;
+		}
 		//	std::cout << layers[0]->dw.size() << "\n";
 		std::vector<std::vector<double>> tempvec(layers[i]->dw.size(), std::vector<double>(layers[i]->dw[0].size(), 0));
 		// std::cout << "okk\n";
@@ -46,10 +49,12 @@ void RMSProp::init_params(std::vector<nn::MLP_Layer*>& layers) {
 	}
 }
 
-void RMSProp::update_params(std::vector<nn::MLP_Layer*>& layers) {
+void RMSProp::update_params(std::vector<nn::Layer*>& layers) {
 	double epsilon = 1e-8;
 	for(size_t i = 0; i < layers.size(); i++) {
-
+		if(!layers[i]->is_trainable) {
+			continue;
+		}
 		sdw[i] = sdw[i] * beta + layers[i]->dw.apply_elem_wise(square) * (1 - beta);
 		layers[i]->w = layers[i]->w - (layers[i]->dw * alpha) / (sdw[i].apply_elem_wise(rt) + epsilon);
 

@@ -1,4 +1,5 @@
 #include "Batch_Handler.hpp"
+#include "Layer.hpp"
 #include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "loss.hpp"
@@ -39,9 +40,11 @@
 namespace nn {
 
 BatchHandler::BatchHandler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-						   matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), nn::optimizer* update_manager)
-	: batch_size{batch_size}, lossprime{lossprime}, update_manager{update_manager} {
+						   matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), nn::optimizer* update_manager,
+						   double (*loss)(matx::Matrix<double>, matx::Matrix<double>))
+	: batch_size{batch_size}, lossprime{lossprime}, update_manager{update_manager}, loss{loss} {
 	split_data(data, y);
+	curr_loss = 0;
 }
 
 void BatchHandler::split_data(const matx::Matrix<double>& data, const matx::Matrix<double>& y) {
@@ -62,54 +65,58 @@ void BatchHandler::split_data(const matx::Matrix<double>& data, const matx::Matr
 	}
 }
 
-void BatchHandler::forward_prop_itr(size_t itr, std::vector<nn::MLP_Layer*>& layers) {
+void BatchHandler::forward_prop_itr(size_t itr, std::vector<nn::Layer*>& layers) {
 	//	std::cout << "forwin\n";
+	matx::Matrix<double> curr_passed_object = batches_X[itr].transpose();
 	for(size_t i = 0; i < layers.size(); i++) {
-		if(i == 0) {
-			(*layers[i]).forward_pass(batches_X[itr].transpose());
-		} else {
-			// std::cout << "0th layer --- " << layers[i - 1]->a.shape()[0] << " " << layers[i - 1]->a.shape()[1] << "\n";
-			(*layers[i]).forward_pass(layers[i - 1]->a);
-		}
+
+		curr_passed_object = (*layers[i]).forward_pass(curr_passed_object);
 	}
+	out_last = curr_passed_object;
 	//	std::cout << "forwout\n";
 }
 
-void BatchHandler::backward_prop_itr(size_t itr, std::vector<nn::MLP_Layer*>& layers) {
-	nn::MLP_Layer* last = layers[layers.size() - 1];
+void BatchHandler::backward_prop_itr(size_t itr, std::vector<nn::Layer*>& layers) {
 	//	std::cout << "backwin\n";
-	matx::Matrix<double> delta = lossprime(batches_Y[itr].transpose(), last->a) * last->activationprime(last->z);
-
+	matx::Matrix<double> dJ_da = lossprime(batches_Y[itr].transpose(), out_last);
 	for(int i = layers.size() - 1; i >= 0; i--) {
-		matx::Matrix<double> a_prev = (i == 0) ? batches_X[itr].transpose() : layers[i - 1]->a;
-		layers[i]->backward_pass(a_prev, delta);
-		if(i) {
-			delta = (layers[i]->w.transpose() % delta) * layers[i - 1]->activationprime(layers[i - 1]->z);
-		}
+		dJ_da = layers[i]->backward_pass(dJ_da);
 	}
 	//	std::cout << "backout\n";
 }
 
 // independent of itr , keep memory of required variables in the other provider class itself!
-void BatchHandler::update_params(std::vector<nn::MLP_Layer*>& layers) {
+void BatchHandler::update_params(std::vector<nn::Layer*>& layers) {
 	// std::cout << "update in\n";
 	update_manager->update_params(layers);
 }
 
-void BatchHandler::init_params_updmanager(std::vector<nn::MLP_Layer*>& layers) {
+void BatchHandler::init_params_updmanager(std::vector<nn::Layer*>& layers) {
 
 	update_manager->init_params(layers);
 	//	std::cout << "exited ";
 }
 
-void BatchHandler::one_epoch(std::vector<nn::MLP_Layer*>& layers) {
+double BatchHandler::compute_loss(matx::Matrix<double>& y) {
+	return loss(y, out_last);
+}
+
+void BatchHandler::one_epoch(std::vector<nn::Layer*>& layers, int verbose) {
 	// std::cout << num_matx << "\n";
+	curr_loss = 0;
 	for(size_t itr = 0; itr < num_matx; itr++) {
 
 		// std::cout << " itr is " << itr << "\n";
 		forward_prop_itr(itr, layers);
+		// out_last.print_Matrix();
+		matx::Matrix<double> y_temp = batches_Y[itr].transpose();
+		curr_loss += compute_loss(y_temp);
 		backward_prop_itr(itr, layers);
 		update_params(layers);
+	}
+	curr_loss /= num_matx;
+	if(verbose) {
+		std::cout << "Loss = " << curr_loss << "\n";
 	}
 }
 
