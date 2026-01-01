@@ -61,8 +61,14 @@ to change ---
 
 
 5) add optimizers like adam , sgd -- DONE
-6) add option to print loss at each epoch
-7) add features like dropout!! -> complicated because layer type can cause issues :(
+6) add option to print loss at each epoch -- DONE
+7) add features like dropout!! -> complicated because layer type can cause issues :( ----------------- DONEEE
+
+** Changed layer interactions -- updated both forward and backprop of MLP_Layer.. see interfaces defined in Layer.hpp.
+Use those templates to build more layers in the future.
+
+dont forget to define is_trainable for each layer!!
+
 8) think about the Matrix constructor how i want to manage it
 
 */
