@@ -53,5 +53,20 @@ class loss {
 		static matx::Matrix<double> mseprime(matx::Matrix<double> y, matx::Matrix<double> y_pred) {
 			return y_pred - y;
 		}
+
+		static double cross_entropy(matx::Matrix<double> y_mat, matx::Matrix<double> y_pred_mat) {
+			double y = y_mat[0][0];
+			double y_pred = y_pred_mat[0][0];
+			double x = -(y * (std::log(y_pred)) + (1 - y) * (std::log(1 - y_pred)));
+			return x;
+		}
+
+		static matx::Matrix<double> cross_entropy_prime(matx::Matrix<double> y_mat, matx::Matrix<double> y_pred_mat) {
+			double y = y_mat[0][0];
+			double y_pred = y_pred_mat[0][0];
+			double temp = -(y / y_pred + (-1 * (1 - y) / (1 - y_pred)));
+			// cout << "y pred is " << y_pred << "\n";
+			return matx::Matrix<double>(1, 1, temp);
+		}
 };
 } // namespace nn

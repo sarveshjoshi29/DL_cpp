@@ -13,6 +13,7 @@
 #include <queue>
 #include <random>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
@@ -49,6 +50,25 @@ class activations {
 
 		static matx::Matrix<double> relu(matx::Matrix<double> x) {
 			return x.apply_elem_wise(relu);
+		}
+
+		static matx::Matrix<double> softmax(matx::Matrix<double> x) {
+			if(x[0].size() != 1) {
+				if(x.size() != 1) {
+					throw std::invalid_argument("Unabl to apply softmax\n");
+				}
+				return softmax(x.transpose());
+			}
+
+			double denom{};
+			for(int i = 0; i < x.size(); i++) {
+				denom += std::exp(x[i][0]);
+			}
+			matx::Matrix<double> ans(x.size(), x[0].size(), 0);
+			for(int i = 0; i < x.size(); i++) {
+				ans[i][0] = std::exp(x[i][0]) / denom;
+			}
+			return ans;
 		}
 
 		static matx::Matrix<double> reluprime(matx::Matrix<double> x) {

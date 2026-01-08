@@ -9,13 +9,16 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_library(nn_lib
-    src/Batch_Handler.cpp
     src/gd_momentum.cpp
     src/MLP_Layer.cpp
     src/rmsprop.cpp
-    src/wrapper.cpp
     src/Adam.cpp
     src/Dropout.cpp
+    src/GNN.cpp
+    src/GNN_BatchHandler.cpp
+    src/wrapper_GNN.cpp
+    src/Graph.cpp
+    src/Attention_Pool.cpp
 )
 
 target_include_directories(nn_lib 

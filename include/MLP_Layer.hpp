@@ -39,7 +39,7 @@ class MLP_Layer : public Layer {
 		void set_weights(int dims_prev_layer, std::mt19937& gen);
 		void set_bias();
 
-		int initialize(int dims) override;
+		std::vector<int> initialize(std::vector<int> dims) override;
 		matx::Matrix<double> forward_pass(matx::Matrix<double> x) override;
 		matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) override;
 };

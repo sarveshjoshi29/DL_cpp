@@ -74,13 +74,14 @@ void MLP_Layer::set_bias() {
 	// std::cout << "set bias exited\n";
 }
 
-int MLP_Layer::initialize(int dims) {
+std::vector<int> MLP_Layer::initialize(std::vector<int> dims) {
 	is_trainable = true;
 	std::random_device rd;
 	std::mt19937 gen{rd()};
-	set_weights(dims, gen);
+	set_weights(dims[0], gen);
 	set_bias();
-	return num_neurons;
+	std::vector<int> t = {num_neurons};
+	return t;
 }
 
 matx::Matrix<double> MLP_Layer::forward_pass(matx::Matrix<double> x) {

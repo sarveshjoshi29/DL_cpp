@@ -1,4 +1,3 @@
-#pragma once
 #include "Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
@@ -6,8 +5,6 @@
 #include <cctype>
 #include <cmath>
 #include <functional>
-#include <initializer_list>
-#include <iomanip>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -21,17 +18,13 @@
 #include <vector>
 
 namespace nn {
-class Dropout : public Layer {
-	public:
-		double dropout_rate;
-		matx::Matrix<double> drop_matrix;
-		std::random_device rd;
-		std::mt19937 gen;
-		std::bernoulli_distribution dist;
+class AttentionPool : public Layer {
+		matx::Matrix<double> softmax_scores;
+		matx::Matrix<double> H;
 
-		Dropout(double frac);
-		std::vector<int> initialize(std::vector<int> input_dims) override;
+	public:
 		matx::Matrix<double> forward_pass(matx::Matrix<double> x) override;
+		std::vector<int> initialize(std::vector<int> input_dims) override;
 		matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) override;
 };
 } // namespace nn

@@ -29,7 +29,7 @@ class Layer {
 		matx::Matrix<double> db;
 		bool is_trainable;
 
-		virtual int initialize(int input_dims) = 0;
+		virtual std::vector<int> initialize(std::vector<int> input_dims) = 0;
 		virtual matx::Matrix<double> forward_pass(matx::Matrix<double> x) = 0;
 		virtual matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) = 0;
 };

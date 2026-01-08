@@ -69,7 +69,6 @@ void BatchHandler::forward_prop_itr(size_t itr, std::vector<nn::Layer*>& layers)
 	//	std::cout << "forwin\n";
 	matx::Matrix<double> curr_passed_object = batches_X[itr].transpose();
 	for(size_t i = 0; i < layers.size(); i++) {
-
 		curr_passed_object = (*layers[i]).forward_pass(curr_passed_object);
 	}
 	out_last = curr_passed_object;

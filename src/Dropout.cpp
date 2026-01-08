@@ -24,8 +24,8 @@ Dropout::Dropout(double frac) : gen(std::random_device{}()), dist(1 - frac), dro
 	is_trainable = false;
 }
 
-int Dropout::initialize(int input_dims) {
-	return input_dims;
+std::vector<int> Dropout::initialize(std::vector<int> input_dims) {
+	return {input_dims};
 }
 
 matx::Matrix<double> Dropout::forward_pass(matx::Matrix<double> x) {

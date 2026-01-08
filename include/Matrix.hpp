@@ -62,6 +62,7 @@ template<typename T> class Matrix {
 			return this->data.size();
 		}
 
+
 		void print_Matrix() const {
 			cout << "[";
 			for(size_t i = 0; i < this->size(); i++) {
