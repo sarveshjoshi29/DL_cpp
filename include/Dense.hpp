@@ -23,7 +23,7 @@
 
 namespace nn { // namespace nn
 
-class MLP_Layer : public Layer {
+class Dense : public Layer {
 	public:
 		matx::Matrix<double> z;
 		matx::Matrix<double> a;
@@ -35,7 +35,7 @@ class MLP_Layer : public Layer {
 		// matx::Matrix<double> dw;
 		// matx::Matrix<double> db;
 		matx::Matrix<double> a_prev;
-		MLP_Layer(int nl, string act);
+		Dense(int nl, string act);
 		void set_weights(int dims_prev_layer, std::mt19937& gen);
 		void set_bias();
 

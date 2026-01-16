@@ -1,7 +1,7 @@
 #include "Adam.hpp"
+#include "Dense.hpp"
 #include "Dropout.hpp"
 #include "Layer.hpp"
-#include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
 #include "gd_momentum.hpp"
@@ -25,6 +25,7 @@
 #include <utility>
 #include <vector>
 
+
 int main() {
 
 	std::cout << "new code\n";
@@ -37,10 +38,10 @@ int main() {
 	matx::Matrix<double> b(y);
 
 	//(a * (double)5).print_Matrix();
-	nn::Layer* layer1 = new nn::MLP_Layer(3, "tanh");
-	nn::Layer* layer2 = new nn::MLP_Layer(4, "sigmoid");
+	nn::Layer* layer1 = new nn::Dense(3, "tanh");
+	nn::Layer* layer2 = new nn::Dense(4, "sigmoid");
 	nn::Layer* drop = new nn::Dropout(0.01);
-	nn::Layer* layer3 = new nn::MLP_Layer(1, "none");
+	nn::Layer* layer3 = new nn::Dense(1, "none");
 
 	nn::optimizer* optim = new nn::Adam(0.15);
 	// std::cout << "np\n";
@@ -64,7 +65,7 @@ to change ---
 6) add option to print loss at each epoch -- DONE
 7) add features like dropout!! -> complicated because layer type can cause issues :( ----------------- DONEEE
 
-** Changed layer interactions -- updated both forward and backprop of MLP_Layer.. see interfaces defined in Layer.hpp.
+** Changed layer interactions -- updated both forward and backprop of Dense.. see interfaces defined in Layer.hpp.
 Use those templates to build more layers in the future.
 
 dont forget to define is_trainable for each layer!!

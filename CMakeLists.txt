@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(nn_lib
     src/Batch_Handler.cpp
     src/gd_momentum.cpp
-    src/MLP_Layer.cpp
+    src/Dense.cpp
     src/rmsprop.cpp
     src/wrapper.cpp
     src/Adam.cpp

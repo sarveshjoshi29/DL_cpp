@@ -1,6 +1,6 @@
 #include "Batch_Handler.hpp"
+#include "Dense.hpp"
 #include "Layer.hpp"
-#include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "loss.hpp"
 #include <algorithm>
@@ -18,6 +18,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
 
 // IDEA IS -- BATCH HANDLER WILL TAKE CARE OF BATCHES... FOR RMSPROP/MOMENTUM/ADAM I NEED TO CREATE CLASSES TO CHANGE MY UPDATE_PARAMS FUNCTION! SO I
 // THINK I SHOULD PLAN TO REMOVE ONLY UPDATE_PARAMS FROM BATCH HANDLER BUT KEEP THE REST.

@@ -6,7 +6,7 @@ A custom C++ Deep Learning library implementing fundamental neural network compo
 ## Features
 
 -   **Layer Types**:
-    -   `MLP_Layer`: Fully Connected (Dense) layers with configurable activation functions.
+    -   `Dense`: Fully Connected (Dense) layers with configurable activation functions.
     -   `Dropout`: Regularization layer to prevent overfitting.
 -   **Optimizers**:
     -   `Adam`: Adaptive Moment Estimation.
@@ -52,7 +52,7 @@ This project demonstrates strong Object-Oriented Programming (OOP) principles an
 Here is a simple example of how to create, train, and use a model (based on `main/main.cpp`):
 
 ```cpp
-#include "MLP_Layer.hpp"
+#include "Dense.hpp"
 #include "Dropout.hpp"
 #include "Adam.hpp"
 #include "wrapper.hpp"
@@ -70,10 +70,10 @@ int main() {
 
     // 2. Define Architecture
     // Eg : Input -> Dense(3, tanh) -> Dense(4, sigmoid) -> Dropout(0.01) -> Dense(1, linear)
-    nn::Layer* layer1 = new nn::MLP_Layer(3, "tanh");
-    nn::Layer* layer2 = new nn::MLP_Layer(4, "sigmoid");
+    nn::Layer* layer1 = new nn::Dense(3, "tanh");
+    nn::Layer* layer2 = new nn::Dense(4, "sigmoid");
     nn::Layer* drop = new nn::Dropout(0.01);
-    nn::Layer* layer3 = new nn::MLP_Layer(1, "none");
+    nn::Layer* layer3 = new nn::Dense(1, "none");
 
     // 3. Select Optimizer with appropriate hyperparams 
     nn::optimizer* optim = new nn::Adam(0.15); // Learning rate 0.15
@@ -106,7 +106,7 @@ DL_cpp/
 │   ├── Batch_Handler.hpp       # Batch processing utilities
 │   ├── Dropout.hpp             # Dropout layer definition
 │   ├── Layer.hpp               # Abstract base Layer interface
-│   ├── MLP_Layer.hpp           # Dense core layer definition
+│   ├── Dense.hpp           # Dense core layer definition
 │   ├── Matrix.hpp              # Templated custom Matrix library
 │   ├── activations.hpp         # Activation functions (sigmoid, tanh, etc.)
 │   ├── gd_momentum.hpp         # Gradient Descent with Momentum optimizer
@@ -118,7 +118,7 @@ DL_cpp/
 │   ├── Adam.cpp                # Adam implementation
 │   ├── Batch_Handler.cpp       # Batch logic implementation
 │   ├── Dropout.cpp             # Dropout implementation
-│   ├── MLP_Layer.cpp           # Dense layer implementation
+│   ├── Dense.cpp           # Dense layer implementation
 │   ├── gd_momentum.cpp         # GD Momentum implementation
 │   ├── rmsprop.cpp             # RMSProp implementation
 │   └── wrapper.cpp             # Model wrapper implementation

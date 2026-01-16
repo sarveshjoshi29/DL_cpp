@@ -1,4 +1,4 @@
-#include "MLP_Layer.hpp"
+#include "Dense.hpp"
 #include "Layer.hpp"
 #include <algorithm>
 #include <cctype>
@@ -20,7 +20,7 @@
 
 namespace nn {
 
-MLP_Layer::MLP_Layer(int nl, string act) {
+Dense::Dense(int nl, string act) {
 	if(act == "relu") {
 		activation = nn::activations::relu;
 		activationprime = nn::activations::reluprime;
@@ -42,7 +42,7 @@ MLP_Layer::MLP_Layer(int nl, string act) {
 	a = activation(z);
 }
 
-void MLP_Layer::set_weights(int dims_prev_layer, std::mt19937& gen) {
+void Dense::set_weights(int dims_prev_layer, std::mt19937& gen) {
 
 	w.resize(num_neurons, dims_prev_layer);
 	// std::cout << (activation == static_cast<matx::Matrix<double> (*)(matx::Matrix<double>)>(nn::activations::relu)) << " dumb\n";
@@ -68,13 +68,13 @@ void MLP_Layer::set_weights(int dims_prev_layer, std::mt19937& gen) {
 	// std::cout << "set wts exited\n";
 }
 
-void MLP_Layer::set_bias() {
+void Dense::set_bias() {
 	b.resize(num_neurons, 1);
 	db.resize(b.shape()[0], b.shape()[1]);
 	// std::cout << "set bias exited\n";
 }
 
-int MLP_Layer::initialize(int dims) {
+int Dense::initialize(int dims) {
 	is_trainable = true;
 	std::random_device rd;
 	std::mt19937 gen{rd()};
@@ -83,7 +83,7 @@ int MLP_Layer::initialize(int dims) {
 	return num_neurons;
 }
 
-matx::Matrix<double> MLP_Layer::forward_pass(matx::Matrix<double> x) {
+matx::Matrix<double> Dense::forward_pass(matx::Matrix<double> x) {
 
 	// std::cout << w.shape()[0] << " " << w.shape()[1] << "\n";
 	a_prev = x;
@@ -95,7 +95,7 @@ matx::Matrix<double> MLP_Layer::forward_pass(matx::Matrix<double> x) {
 	return a;
 }
 
-matx::Matrix<double> MLP_Layer::backward_pass(matx::Matrix<double> dJ_da) {
+matx::Matrix<double> Dense::backward_pass(matx::Matrix<double> dJ_da) {
 	double m = a.shape()[1];
 	matx::Matrix<double> delta_l = dJ_da * activationprime(z);
 	dw = (delta_l % (a_prev.transpose())) * (1.0 / m);

@@ -1,6 +1,6 @@
 #pragma once
+#include "Dense.hpp"
 #include "Layer.hpp"
-#include "MLP_Layer.hpp"
 #include "Matrix.hpp"
 #include "loss.hpp"
 #include "optimizer.hpp"
@@ -19,6 +19,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+
 
 namespace nn {
 class BatchHandler {
