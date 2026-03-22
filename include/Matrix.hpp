@@ -7,6 +7,7 @@
 #pragma once
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <cmath>
 #include <functional>
 #include <iostream>
@@ -25,6 +26,7 @@
 #include <utility>
 #include <vector>
 
+
 using namespace std;
 
 namespace matx {
@@ -42,7 +44,11 @@ template<typename T> class Matrix {
 
 		Matrix() = default;
 
-		Matrix(const vector<vector<T>> data) : data{data} {
+		Matrix(vector<vector<T>>&& input) {
+			data = std::move(input);
+		}
+
+		Matrix(const vector<vector<T>>& data) : data{data} {
 		}
 
 		Matrix(int rows, int cols, T value = T{}) {

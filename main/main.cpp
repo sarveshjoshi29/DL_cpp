@@ -4,11 +4,13 @@
 #include "Layer.hpp"
 #include "Matrix.hpp"
 #include "activations.hpp"
+#include "dataset_loader.hpp"
 #include "gd_momentum.hpp"
 #include "loss.hpp"
 #include "wrapper.hpp"
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <cmath>
 #include <functional>
 #include <initializer_list>
@@ -28,28 +30,40 @@
 int main() {
 
 	std::cout << "new code\n";
-	std::vector<std::vector<double>> X = {{0.0, -0.889, 1.414}, {-1.225, 1.397, -0.707}, {1.225, -0.508, -0.707}};
 
-	std::vector<std::vector<double>> y = {{2.5}, {-6.2}, {13.1}};
-	// std::vector<std::vector<double>> X = {{2}};
-	// std::vector<std::vector<double>> y = {{3}};
-	matx::Matrix<double> a(X);
-	matx::Matrix<double> b(y);
+	auto start_time = std::chrono::high_resolution_clock::now();
+	std::cout << "Loading dataset..." << std::endl;
 
-	//(a * (double)5).print_Matrix();
+	utils::csv_parser parser("../dataset/mnist_train.csv");
+	matx::Matrix<double> X(std::move(parser.data_X));
+	matx::Matrix<double> y(std::move(parser.data_y));
+
+	auto end_time = std::chrono::high_resolution_clock::now();
+
+	// 4. Calculate the duration
+	std::chrono::duration<double> elapsed = end_time - start_time;
+
+	// 5. Log the results
+	std::cout << "-----------------------------------\n";
+	std::cout << "Data loaded successfully!" << std::endl;
+	std::cout << "Total rows: " << X.shape()[0] << "   Total columns: " << X.shape()[1] << std::endl;
+	std::cout << "Time taken: " << std::fixed << std::setprecision(4) << elapsed.count() << " seconds" << std::endl;
+	std::cout << "-----------------------------------\n";
+
+	// //(a * (double)5).print_Matrix();
 	nn::Layer* layer1 = new nn::Dense(3, "tanh");
 	nn::Layer* layer2 = new nn::Dense(4, "sigmoid");
 	nn::Layer* drop = new nn::Dropout(0.01);
 	nn::Layer* layer3 = new nn::Dense(1, "none");
 
 	nn::Adam optim(0.15);
-	// std::cout << "np\n";
+	// // std::cout << "np\n";
 	nn::wrapper model({layer1, layer2, drop, layer3}, &optim);
 
-	model.train(a, b, 100);
-	// std::cout << "what\n;";
-	matx::Matrix<double> y_pred = model.predict(a);
-	y_pred.print_Matrix();
+	model.train(X, y, 10);
+	// // std::cout << "what\n;";
+	// matx::Matrix<double> y_pred = model.predict(a);
+	// y_pred.print_Matrix();
 }
 
 // Note --to make sure the wrapper object is deleted it is the user's responsibility to provide its scope

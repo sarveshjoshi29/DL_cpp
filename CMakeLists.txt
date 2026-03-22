@@ -16,10 +16,12 @@ add_library(nn_lib
     src/wrapper.cpp
     src/Adam.cpp
     src/Dropout.cpp
+    utils/src/dataset_loader.cpp
 )
 
 target_include_directories(nn_lib 
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/utils/include
 )
 
 add_executable(test

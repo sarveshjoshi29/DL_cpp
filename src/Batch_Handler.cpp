@@ -5,8 +5,10 @@
 #include "loss.hpp"
 #include <algorithm>
 #include <cctype>
+#include <chrono>
 #include <cmath>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -103,7 +105,9 @@ double BatchHandler::compute_loss(matx::Matrix<double>& y) {
 
 void BatchHandler::one_epoch(std::vector<nn::Layer*>& layers, int verbose) {
 	// std::cout << num_matx << "\n";
+
 	curr_loss = 0;
+	auto start_epoch = std::chrono::high_resolution_clock::now();
 	for(size_t itr = 0; itr < num_matx; itr++) {
 
 		// std::cout << " itr is " << itr << "\n";
@@ -116,7 +120,11 @@ void BatchHandler::one_epoch(std::vector<nn::Layer*>& layers, int verbose) {
 	}
 	curr_loss /= num_matx;
 	if(verbose) {
-		std::cout << "Loss = " << curr_loss << "\n";
+		auto end_epoch = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<double> time_taken = end_epoch - start_epoch;
+		std::cout << std::fixed << std::setprecision(8) << "Loss = " << curr_loss << " | Time taken = " << time_taken.count()
+				  << " seconds"
+					 "\n";
 	}
 }
 
