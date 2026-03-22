@@ -25,7 +25,6 @@
 #include <utility>
 #include <vector>
 
-
 int main() {
 
 	std::cout << "new code\n";
@@ -43,15 +42,18 @@ int main() {
 	nn::Layer* drop = new nn::Dropout(0.01);
 	nn::Layer* layer3 = new nn::Dense(1, "none");
 
-	nn::optimizer* optim = new nn::Adam(0.15);
+	nn::Adam optim(0.15);
 	// std::cout << "np\n";
-	nn::wrapper model({layer1, layer2, drop, layer3}, optim);
+	nn::wrapper model({layer1, layer2, drop, layer3}, &optim);
 
 	model.train(a, b, 100);
 	// std::cout << "what\n;";
 	matx::Matrix<double> y_pred = model.predict(a);
 	y_pred.print_Matrix();
 }
+
+// Note --to make sure the wrapper object is deleted it is the user's responsibility to provide its scope
+// particularly when the same optimizer is used for different models.
 
 /*
 to change ---

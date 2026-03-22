@@ -20,7 +20,6 @@
 #include <utility>
 #include <vector>
 
-
 namespace nn {
 class BatchHandler {
 	public:

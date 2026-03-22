@@ -28,9 +28,7 @@ wrapper::~wrapper() {
 	if(batch_handler != nullptr) {
 		delete batch_handler;
 	}
-	if(update_manager != nullptr) {
-		delete update_manager;
-	}
+	// it is responsibility of user to delete optimizer because same optimizer can be used for different models.
 	for(auto k : layers) {
 		if(k != nullptr) {
 			delete k;
@@ -49,12 +47,17 @@ wrapper::wrapper(std::initializer_list<nn::Layer*> inp_layers, nn::optimizer* op
 		this->layers.push_back(l);
 	}
 	update_manager = optimizer;
+	batch_handler = nullptr;
 }
 
 void wrapper::train(const matx::Matrix<double> X_train, const matx::Matrix<double> y_train, int epochs, size_t batch_size, int verbose) {
 	data = X_train;
 	y = y_train;
 	//	std::cout << "done\n";
+	// if train is called multiple times we want to delete the previous training object
+	if(batch_handler != nullptr) {
+		delete batch_handler;
+	}
 	init_batch_handler(batch_size, X_train, y_train, lossprime, update_manager, loss);
 	std::vector<int> inp_dims = data.transpose().shape();
 	int curr_dims = inp_dims[0];
@@ -100,4 +103,5 @@ void wrapper::init_batch_handler(size_t batch_size, const matx::Matrix<double>& 
 	this->batch_handler = new nn::BatchHandler(batch_size, data, y, lossprime, update_manager, loss);
 	// std::cout << "exited\n";
 }
+
 } // namespace nn
