@@ -42,8 +42,8 @@
 namespace nn {
 
 BatchHandler::BatchHandler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-						   matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), nn::optimizer* update_manager,
-						   double (*loss)(matx::Matrix<double>, matx::Matrix<double>))
+						   matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&), nn::optimizer* update_manager,
+						   double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&))
 	: batch_size{batch_size}, lossprime{lossprime}, update_manager{update_manager}, loss{loss} {
 	split_data(data, y);
 	curr_loss = 0;

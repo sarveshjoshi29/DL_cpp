@@ -33,6 +33,8 @@ A custom C++ Deep Learning library implementing fundamental neural network compo
 
 A PowerShell script is provided to automate the build and run process. It handles directory creation, CMake configuration, compilation, and execution.
 
+After compilation is done two sample executables cali.exe and mnist.exe would be generated in the exe/ directory. The powershell scripts runs cali.exe by default. You can train on your own dataset too, the provided samples are examples and are used for benchmarking.
+
 ```powershell
 ./run.ps1
 ```
@@ -149,3 +151,6 @@ DL_cpp/
 
 ## Benchmarking on California Housing Dataset
 ![alt text](california_housing.png)
+
+## Benchmarking on MNIST dataset
+![alt text](mnist.png)

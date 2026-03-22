@@ -30,8 +30,8 @@ class Layer {
 		bool is_trainable;
 
 		virtual int initialize(int input_dims) = 0;
-		virtual matx::Matrix<double> forward_pass(matx::Matrix<double> x) = 0;
-		virtual matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) = 0;
+		virtual matx::Matrix<double> forward_pass(matx::Matrix<double> &x) = 0;
+		virtual matx::Matrix<double> backward_pass(matx::Matrix<double> &dJ_da) = 0;
 		virtual ~Layer() = default;
 };
 

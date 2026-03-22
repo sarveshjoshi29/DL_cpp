@@ -26,7 +26,6 @@
 #include <utility>
 #include <vector>
 
-
 using namespace std;
 
 namespace matx {
@@ -400,7 +399,7 @@ template<typename T> class Matrix {
 					}
 				}
 			}
-			return Matrix<T>(ans);
+			return Matrix<T>(std::move(ans));
 		}
 
 		//----------------------------------------------------------------------------------------------------
@@ -431,7 +430,7 @@ template<typename T> class Matrix {
 				}
 				ctrow++;
 			}
-			return Matrix(ans);
+			return Matrix<T>(std::move(ans));
 		}
 
 		//------------------------------------------------------------
@@ -459,7 +458,7 @@ template<typename T> class Matrix {
 				}
 			}
 
-			return Matrix(ans);
+			return Matrix<T>(std::move(ans));
 		}
 
 		//-------------------------------------------------------------------------------------------

@@ -17,6 +17,7 @@ add_library(nn_lib
     src/Adam.cpp
     src/Dropout.cpp
     utils/src/dataset_loader.cpp
+    utils/src/file_manager.cpp
 )
 
 target_include_directories(nn_lib 
@@ -24,10 +25,15 @@ target_include_directories(nn_lib
     PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/utils/include
 )
 
-add_executable(test
-    main/main.cpp 
+add_executable(mnist
+    main/mnist.cpp 
 )
+target_link_libraries(mnist nn_lib)
 
-target_link_libraries(test nn_lib)
+add_executable(cali
+    main/california_housing.cpp 
+)
+target_link_libraries(cali nn_lib)
+
 
 	

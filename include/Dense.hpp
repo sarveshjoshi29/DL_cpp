@@ -40,7 +40,7 @@ class Dense : public Layer {
 		void set_bias();
 
 		int initialize(int dims) override;
-		matx::Matrix<double> forward_pass(matx::Matrix<double> x) override;
-		matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) override;
+		matx::Matrix<double> forward_pass(matx::Matrix<double> &x) override;
+		matx::Matrix<double> backward_pass(matx::Matrix<double> &dJ_da) override;
 };
 } // namespace nn

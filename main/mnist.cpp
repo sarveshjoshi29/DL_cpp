@@ -5,6 +5,7 @@
 #include "Matrix.hpp"
 #include "activations.hpp"
 #include "dataset_loader.hpp"
+#include "file_manager.hpp"
 #include "gd_momentum.hpp"
 #include "loss.hpp"
 #include "wrapper.hpp"
@@ -32,10 +33,10 @@ int main() {
 	// std::cout << "new code\n";
 
 	auto start_time = std::chrono::high_resolution_clock::now();
-	std::cout << "Loading dataset california housing..." << std::endl;
+	std::cout << "Loading mnist dataset..." << std::endl;
 
-	utils::csv_parser parser("../dataset/california_housing_train.csv");
-	utils::csv_parser parser_test("../dataset/california_housing_test.csv");
+	utils::csv_parser parser("../dataset/mnist_train.csv");
+	utils::csv_parser parser_test("../dataset/mnist_test.csv");
 	matx::Matrix<double> X(std::move(parser.data_X));
 	matx::Matrix<double> y(std::move(parser.data_y));
 
@@ -52,7 +53,7 @@ int main() {
 	std::cout << "-----------------------------------\n";
 
 	// //(a * (double)5).print_Matrix();
-	nn::Layer* layer1 = new nn::Dense(20, "tanh");
+	nn::Layer* layer1 = new nn::Dense(20, "sigmoid");
 	nn::Layer* layer2 = new nn::Dense(20, "sigmoid");
 	nn::Layer* drop = new nn::Dropout(0.01);
 	nn::Layer* layer3 = new nn::Dense(1, "none");
@@ -60,13 +61,17 @@ int main() {
 	nn::Adam optim(0.005);
 	// // std::cout << "np\n";
 	nn::wrapper model({layer1, layer2, drop, layer3}, &optim);
-	model.train(X, y, 20);
+	model.train(X, y, 10);
 	// // std::cout << "what\n;";
 	matx::Matrix<double> y_pred = model.predict(X_test);
 	// std::cout << y_pred.shape()[0] << " " << y_pred.shape()[1] << "\n";
 	// std::cout << y_test.shape()[0] << " " << y_test.shape()[1] << "\n";
 	double test_loss = nn::loss::mse(y_test.transpose(), y_pred);
 	std::cout << "Loss on test dataset is " << test_loss << "\n";
+
+	utils::file_manager f;
+	f.save<double>("../predictions/mnist_pred.csv", y_pred);
+
 	// y_pred.print_Matrix();
 }
 

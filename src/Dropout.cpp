@@ -28,7 +28,7 @@ int Dropout::initialize(int input_dims) {
 	return input_dims;
 }
 
-matx::Matrix<double> Dropout::forward_pass(matx::Matrix<double> x) {
+matx::Matrix<double> Dropout::forward_pass(matx::Matrix<double>& x) {
 	// std::cout << "forw start\n";
 	matx::Matrix<double> d(x.size(), x[0].size(), 1);
 	for(int i = 0; i < d.size(); i++) {
@@ -42,7 +42,7 @@ matx::Matrix<double> Dropout::forward_pass(matx::Matrix<double> x) {
 	return (x * drop_matrix) / (1 - dropout_rate);
 }
 
-matx::Matrix<double> Dropout::backward_pass(matx::Matrix<double> dJ_da) {
+matx::Matrix<double> Dropout::backward_pass(matx::Matrix<double>& dJ_da) {
 	return (dJ_da * drop_matrix) / (1 - dropout_rate);
 }
 } // namespace nn

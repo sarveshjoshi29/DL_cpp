@@ -31,7 +31,7 @@ class Dropout : public Layer {
 
 		Dropout(double frac);
 		int initialize(int input_dims) override;
-		matx::Matrix<double> forward_pass(matx::Matrix<double> x) override;
-		matx::Matrix<double> backward_pass(matx::Matrix<double> dJ_da) override;
+		matx::Matrix<double> forward_pass(matx::Matrix<double> &x) override;
+		matx::Matrix<double> backward_pass(matx::Matrix<double> &dJ_da) override;
 };
 } // namespace nn

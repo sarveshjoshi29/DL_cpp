@@ -1,7 +1,7 @@
 
 
 $BuildDir = "build"
-$ExeTargetName = "test"
+$ExeTargetName = "cali"
 
 if (!(Test-Path -Path $BuildDir)) {
     Write-Host "--- Creating Build Directory ---" -ForegroundColor Cyan

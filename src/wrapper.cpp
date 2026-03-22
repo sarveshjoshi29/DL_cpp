@@ -42,6 +42,9 @@ wrapper::wrapper(std::initializer_list<nn::Layer*> inp_layers, nn::optimizer* op
 	if(loss == "mse") {
 		this->loss = nn::loss::mse;
 		this->lossprime = nn::loss::mseprime;
+	} else if(loss == "bce") {
+		this->loss = nn::loss::bce;
+		this->lossprime = nn::loss::mseprime;
 	}
 	for(auto l : inp_layers) {
 		this->layers.push_back(l);
@@ -50,7 +53,7 @@ wrapper::wrapper(std::initializer_list<nn::Layer*> inp_layers, nn::optimizer* op
 	batch_handler = nullptr;
 }
 
-void wrapper::train(const matx::Matrix<double> X_train, const matx::Matrix<double> y_train, int epochs, size_t batch_size, int verbose) {
+void wrapper::train(const matx::Matrix<double>& X_train, const matx::Matrix<double>& y_train, int epochs, size_t batch_size, int verbose) {
 	data = X_train;
 	y = y_train;
 	//	std::cout << "done\n";
@@ -97,8 +100,8 @@ void wrapper::printwts() {
 }
 
 void wrapper::init_batch_handler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-								 matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), optimizer* update_manager,
-								 double (*loss)(matx::Matrix<double>, matx::Matrix<double>)) {
+								 matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&),
+								 optimizer* update_manager, double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&)) {
 	//	std::cout << "reached bh_init\n";
 	this->batch_handler = new nn::BatchHandler(batch_size, data, y, lossprime, update_manager, loss);
 	// std::cout << "exited\n";

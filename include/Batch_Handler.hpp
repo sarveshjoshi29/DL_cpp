@@ -29,13 +29,13 @@ class BatchHandler {
 		std::vector<matx::Matrix<double>> batches_X;
 		std::vector<matx::Matrix<double>> batches_Y;
 		size_t num_matx;
-		matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>);
-		double (*loss)(matx::Matrix<double>, matx::Matrix<double>);
+		matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&);
+		double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&);
 		nn::optimizer* update_manager;
 
 		BatchHandler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-					 matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), nn::optimizer* update_manager,
-					 double (*loss)(matx::Matrix<double>, matx::Matrix<double>));
+					 matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&), nn::optimizer* update_manager,
+					 double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&));
 
 		void split_data(const matx::Matrix<double>& data, const matx::Matrix<double>& y);
 

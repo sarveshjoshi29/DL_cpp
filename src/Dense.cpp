@@ -83,7 +83,7 @@ int Dense::initialize(int dims) {
 	return num_neurons;
 }
 
-matx::Matrix<double> Dense::forward_pass(matx::Matrix<double> x) {
+matx::Matrix<double> Dense::forward_pass(matx::Matrix<double>& x) {
 
 	// std::cout << w.shape()[0] << " " << w.shape()[1] << "\n";
 	a_prev = x;
@@ -95,7 +95,7 @@ matx::Matrix<double> Dense::forward_pass(matx::Matrix<double> x) {
 	return a;
 }
 
-matx::Matrix<double> Dense::backward_pass(matx::Matrix<double> dJ_da) {
+matx::Matrix<double> Dense::backward_pass(matx::Matrix<double>& dJ_da) {
 	double m = a.shape()[1];
 	matx::Matrix<double> delta_l = dJ_da * activationprime(z);
 	dw = (delta_l % (a_prev.transpose())) * (1.0 / m);

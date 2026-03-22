@@ -33,15 +33,16 @@ class wrapper {
 		std::mt19937 gen;
 		matx::Matrix<double> data;
 		matx::Matrix<double> y;
-		double (*loss)(matx::Matrix<double>, matx::Matrix<double>);
-		matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>);
+		double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&);
+		matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&);
 		nn::optimizer* update_manager;
 
 		~wrapper();
 
 		wrapper(std::initializer_list<nn::Layer*> inp_layers, nn::optimizer* optimizer, string loss = "mse");
 
-		void train(const matx::Matrix<double> X_train, const matx::Matrix<double> y_train, int epochs = 100, size_t batch_size = 32, int verbose = 1);
+		void train(const matx::Matrix<double>& X_train, const matx::Matrix<double>& y_train, int epochs = 100, size_t batch_size = 32,
+				   int verbose = 1);
 
 		matx::Matrix<double> predict(matx::Matrix<double> X_test);
 
@@ -49,7 +50,7 @@ class wrapper {
 
 	private:
 		void init_batch_handler(size_t batch_size, const matx::Matrix<double>& data, const matx::Matrix<double>& y,
-								matx::Matrix<double> (*lossprime)(matx::Matrix<double>, matx::Matrix<double>), optimizer* update_manager,
-								double (*loss)(matx::Matrix<double>, matx::Matrix<double>));
+								matx::Matrix<double> (*lossprime)(const matx::Matrix<double>&, const matx::Matrix<double>&),
+								optimizer* update_manager, double (*loss)(const matx::Matrix<double>&, const matx::Matrix<double>&));
 };
 } // namespace nn
