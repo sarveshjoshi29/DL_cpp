@@ -148,4 +148,4 @@ DL_cpp/
 
 
 ## Benchmarking on California Housing Dataset
-![alt text](image.png)
+![alt text](california_housing.png)
