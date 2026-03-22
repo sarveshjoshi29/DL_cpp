@@ -29,21 +29,22 @@
 
 int main() {
 
-	std::cout << "new code\n";
+	// std::cout << "new code\n";
 
 	auto start_time = std::chrono::high_resolution_clock::now();
-	std::cout << "Loading dataset..." << std::endl;
+	std::cout << "Loading dataset california housing..." << std::endl;
 
-	utils::csv_parser parser("../dataset/mnist_train.csv");
+	utils::csv_parser parser("../dataset/california_housing_train.csv");
+	utils::csv_parser parser_test("../dataset/california_housing_test.csv");
 	matx::Matrix<double> X(std::move(parser.data_X));
 	matx::Matrix<double> y(std::move(parser.data_y));
 
-	auto end_time = std::chrono::high_resolution_clock::now();
+	matx::Matrix<double> X_test(std::move(parser_test.data_X));
+	matx::Matrix<double> y_test(std::move(parser_test.data_y));
 
-	// 4. Calculate the duration
+	auto end_time = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsed = end_time - start_time;
 
-	// 5. Log the results
 	std::cout << "-----------------------------------\n";
 	std::cout << "Data loaded successfully!" << std::endl;
 	std::cout << "Total rows: " << X.shape()[0] << "   Total columns: " << X.shape()[1] << std::endl;
@@ -51,18 +52,21 @@ int main() {
 	std::cout << "-----------------------------------\n";
 
 	// //(a * (double)5).print_Matrix();
-	nn::Layer* layer1 = new nn::Dense(3, "tanh");
-	nn::Layer* layer2 = new nn::Dense(4, "sigmoid");
+	nn::Layer* layer1 = new nn::Dense(20, "tanh");
+	nn::Layer* layer2 = new nn::Dense(20, "sigmoid");
 	nn::Layer* drop = new nn::Dropout(0.01);
 	nn::Layer* layer3 = new nn::Dense(1, "none");
 
-	nn::Adam optim(0.15);
+	nn::Adam optim(0.005);
 	// // std::cout << "np\n";
 	nn::wrapper model({layer1, layer2, drop, layer3}, &optim);
-
-	model.train(X, y, 10);
+	model.train(X, y, 20);
 	// // std::cout << "what\n;";
-	// matx::Matrix<double> y_pred = model.predict(a);
+	matx::Matrix<double> y_pred = model.predict(X_test);
+	// std::cout << y_pred.shape()[0] << " " << y_pred.shape()[1] << "\n";
+	// std::cout << y_test.shape()[0] << " " << y_test.shape()[1] << "\n";
+	double test_loss = nn::loss::mse(y_test.transpose(), y_pred);
+	std::cout << "Loss on test dataset is " << test_loss << "\n";
 	// y_pred.print_Matrix();
 }
 
@@ -88,4 +92,6 @@ dont forget to define is_trainable for each layer!!
 
 8) think about the Matrix constructor how i want to manage it
 
+
+9) Save weights of a model in binary and implement reconstruction when model.load() is called!
 */

@@ -138,3 +138,14 @@ DL_cpp/
 ## Extensions & Experimental Modules
 
 -   **Graph Neural Networks (GNN)**: A specialized implementation residing in the `GNN` branch. It introduces a custom Graph Data structure and specialized batch handling logic to support graph-based deep learning tasks.. 
+
+
+## Instructions for user 
+
+- 1. Currently you can add a dataset consisting of only floating point numbers by making a directory named "dataset" in the project root. Make sure the last column is the target column and use a csv_parser object to get corresponding X and y. An example is shown in main.cpp
+
+- 2. Currently data preprocessing such as scaling and NaN value handling must be entirely done by the user before putting it in the dataset directory. Note that presence of NaN values will throw errors.
+
+
+## Benchmarking on California Housing Dataset
+![alt text](image.png)
